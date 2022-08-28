@@ -26,7 +26,7 @@ namespace RememberBirthdays
             Monitor = monitor;
             Config = config;
 
-            if (Config.Icon == "NPC")
+            if (Config.NPCIcon)
             {
                 this.displayNPC = true;
             }

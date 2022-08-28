@@ -8,7 +8,7 @@ namespace RememberBirthdays
 {
     internal class ModConfig
     {
-        public string Icon { get; set; } = "Gift";
+        public bool NPCIcon { get; set; } = false;
         public bool Disable { get; set; } = false;
     }
 }

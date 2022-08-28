@@ -6,5 +6,5 @@
   "UniqueID": "zeldela-RememberBirthdays",
   "EntryDll": "RememberBirthdays.dll",
   "MinimumApiVersion": "3.0.0",
-  "UpdateKeys": [ "" ]
+  "UpdateKeys": [ "Nexus:13554" ]
 }
