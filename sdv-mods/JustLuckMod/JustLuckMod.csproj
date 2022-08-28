@@ -2,7 +2,10 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-    <AssemblyName>JustMyLuck</AssemblyName>
+    <AssemblyName>JustLuckMod</AssemblyName>
+    <ReleaseVersion>1.0</ReleaseVersion>
+    <ModZipPath>$(SolutionDir)\_releases</ModZipPath>
+    <SynchReleaseVersion>false</SynchReleaseVersion>
   </PropertyGroup>
 
   <ItemGroup>

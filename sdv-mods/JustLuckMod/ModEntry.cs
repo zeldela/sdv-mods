@@ -6,7 +6,7 @@ using StardewModdingAPI.Utilities;
 using StardewValley;
 using StardewValley.Menus;
 
-namespace JustMyLuck
+namespace JustLuckMod
 {
     public class ModEntry : Mod
     {

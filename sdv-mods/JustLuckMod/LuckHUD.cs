@@ -5,7 +5,7 @@ using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
 
-namespace JustMyLuck
+namespace JustLuckMod
 {
     internal class LuckHUD      
     {
