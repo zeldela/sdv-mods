@@ -4,16 +4,18 @@ using StardewModdingAPI;
 using StardewModdingAPI.Events;
 using StardewValley;
 using StardewValley.Menus;
+using System.Collections.Generic;
+using System.Collections;
 
 namespace JustLuckMod
 {
     internal class LuckHUD      
     {
-        private readonly IMonitor Monitor;
+        private readonly IModHelper helper;
 
-        public LuckHUD(IMonitor monitor)
+        public LuckHUD(IModHelper helper)
         {
-            Monitor = monitor;
+            this.helper = helper;
         }
 
         internal string GetFortune(Farmer who)
@@ -46,7 +48,9 @@ namespace JustLuckMod
                 fortuneID = "13198";
             }
 
-            string fortuneTV = Game1.content.LoadString($"Strings\\StringsFromCSFiles:TV.cs.{fortuneID}");
+
+            Dictionary<string, string> TV = helper.GameContent.Load<Dictionary<string, string>>("Strings/StringsFromCSFiles");
+            string fortuneTV = TV[$"TV.cs.{fortuneID}"];
             string[] delimiterChars = { "! ", "!", ". ", "." };
             string[] words = fortuneTV.Split(delimiterChars, System.StringSplitOptions.RemoveEmptyEntries);
             string fortune = "";
@@ -60,11 +64,11 @@ namespace JustLuckMod
 
             if (dailyLuck < 0)
             {
-                fortune = $"{fortune}Luck score: -{fortuneLuck}%.";
+                fortune = $"{fortune}Fortune: {fortuneLuck}%.";
             }
             else
             {
-                fortune = $"{fortune}Luck score: +{fortuneLuck}%.";
+                fortune = $"{fortune}Fortune: +{fortuneLuck}%.";
             }
 
             return fortune;

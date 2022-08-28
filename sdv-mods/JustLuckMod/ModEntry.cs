@@ -19,7 +19,7 @@ namespace JustLuckMod
 
         public override void Entry(IModHelper helper)
         {
-            luckHUD = new LuckHUD(this.Monitor);
+            luckHUD = new LuckHUD(helper);
             ModConfig Config = this.Helper.ReadConfig<ModConfig>();
 
             if (!Config.Disable)
