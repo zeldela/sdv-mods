@@ -28,6 +28,7 @@ namespace JustLuckMod
                 helper.Events.Display.RenderingHud += this.OnRenderingHud;
                 helper.Events.Input.CursorMoved += this.OnCursorMoved;
                 helper.Events.Display.Rendered += this.OnRendered;
+                helper.Events.Display.WindowResized += this.OnWindowResized;
 
             }
 
@@ -77,6 +78,11 @@ namespace JustLuckMod
                     hover = false;
                 }
             }
+        }
+
+        internal void OnWindowResized(object sender, WindowResizedEventArgs e)
+        {
+            luckIcon = luckHUD.GetLuckIcon();
         }
 
     }
