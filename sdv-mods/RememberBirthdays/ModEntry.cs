@@ -13,7 +13,6 @@ namespace RememberBirthdays
         BirthdayHandler hbd;
         bool birthdayToday = false;
         bool gifted = false;
-        bool hover = false;
         ModConfig Config;
 
         public override void Entry(IModHelper helper)
@@ -22,11 +21,9 @@ namespace RememberBirthdays
             if (!Config.Disable)
             {
                 helper.Events.GameLoop.DayStarted += this.OnDayStarted;
-                helper.Events.Display.RenderingHud += this.OnRenderingHUD;
-                helper.Events.Display.WindowResized += this.OnWindowResized;
-                helper.Events.Display.Rendered += this.OnRendered;
+                helper.Events.Display.RenderedHud += this.OnRenderedHUD;
                 helper.Events.Player.InventoryChanged += this.OnInventoryChanged;
-                helper.Events.Input.CursorMoved += this.OnCursorMoved;
+                helper.Events.Display.WindowResized += this.OnWindowResized;
                
             }
 
@@ -35,10 +32,10 @@ namespace RememberBirthdays
         internal void OnDayStarted(object sender, DayStartedEventArgs e)
         {
             Config = this.Helper.ReadConfig<ModConfig>();
-            this.hbd = new BirthdayHandler(this.Monitor, Config);
-            this.birthdayToday = hbd.birthdayToday;
-            this.birthdayIcon = this.hbd.BirthdayIcon(this.gifted);
-            if (this.birthdayToday)
+            hbd = new BirthdayHandler(this.Monitor, Config);
+            birthdayToday = hbd.birthdayToday;
+            gifted = false;
+            if (birthdayToday)
             {
                 Monitor.Log($"{this.hbd.birthdayNPC.Name} has a birthday today.", LogLevel.Debug);
             }
@@ -46,61 +43,50 @@ namespace RememberBirthdays
 
         internal void OnInventoryChanged(object sender, InventoryChangedEventArgs e)
         {
-            if (this.birthdayToday)
+            if (birthdayToday)
             {
-                if (Game1.player.friendshipData.ContainsKey(this.hbd.birthdayNPC.Name))
+                if (Game1.player.friendshipData.ContainsKey(hbd.birthdayNPC.Name))
                 {
-                    if (Game1.player.friendshipData[this.hbd.birthdayNPC.Name].LastGiftDate == new WorldDate(Game1.Date))
+                    if (Game1.player.friendshipData[hbd.birthdayNPC.Name].LastGiftDate == new WorldDate(Game1.Date))
                     {
-                        this.gifted = true;
-                        this.birthdayIcon = this.hbd.BirthdayIcon(this.gifted);
+                        gifted = true;
+                        birthdayIcon = hbd.BirthdayIcon(gifted);
                     }
                 }
             }
 
         }
 
-        internal void OnRenderingHUD(object sender, RenderingHudEventArgs e)
+        internal void OnRenderedHUD(object sender, RenderedHudEventArgs e)
         {
+            if (!Context.IsWorldReady || gifted)
+                return;
 
-            if (Context.IsPlayerFree)
+            birthdayIcon = hbd.BirthdayIcon(gifted);
+
+            if (Game1.displayHUD && birthdayIcon != null)
             {
-                if (this.birthdayIcon != null)
-                {
-                    this.birthdayIcon.draw(Game1.spriteBatch);
-                }
-                
-            }
+                Point coords = hbd.IconCoords();
+                birthdayIcon.bounds.X = coords.X;
+                birthdayIcon.bounds.Y = coords.Y;
+                birthdayIcon.draw(Game1.spriteBatch);
 
-        }
-
-        internal void OnRendered(object sender, RenderedEventArgs e)
-        {
-            if (Context.IsPlayerFree && hover)
-            {
-                IClickableMenu.drawHoverText(Game1.spriteBatch, this.hbd.birthdayNPC.Name, Game1.smallFont);
-            }
-        }
-
-        internal void OnCursorMoved(object sender, CursorMovedEventArgs e)
-        {
-            if (Context.IsPlayerFree && this.birthdayIcon != null)
-            {
-                if (this.birthdayIcon.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
-                {
-                    hover = true;
+                if (birthdayIcon.containsPoint(Game1.getMouseX(), Game1.getMouseY()))
+                { 
+                    IClickableMenu.drawHoverText(Game1.spriteBatch, hbd.birthdayNPC.Name, Game1.smallFont);
                 }
-                else
-                {
-                    hover = false;
-                }
+
             }
 
         }
 
         internal void OnWindowResized(object sender, WindowResizedEventArgs e)
         {
-            this.birthdayIcon = this.hbd.BirthdayIcon(this.gifted);
+            if (!Context.IsWorldReady || gifted)
+                return;
+
+            birthdayIcon = hbd.BirthdayIcon(gifted);
+            
         }
 
 

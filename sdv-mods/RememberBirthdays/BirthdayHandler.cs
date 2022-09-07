@@ -51,15 +51,19 @@ namespace RememberBirthdays
             return npc.isBirthday(season, day);
         }
 
+        internal Point IconCoords()
+        {
+            int x = Game1.uiViewport.Width - 310;
+            int y = (this.displayNPC) ? 200 : 205;
+            return new Point(x, y);
+        }
+
         internal ClickableTextureComponent BirthdayIcon(bool gifted)
         {
             int zoom = 2;
-            int x = Game1.uiViewport.Width - 310;
-            int y = 205;
-            if (this.displayNPC)
-            {
-                y = 200;
-            }
+            Point coords = IconCoords();
+            int x = coords.X;
+            int y = coords.Y;
             Texture2D texture;
             Rectangle sourceRect;
             if (this.birthdayToday && !gifted)
@@ -87,7 +91,7 @@ namespace RememberBirthdays
 
         }
 
-        /// Credit goes to GitHub user bouhm for the GetVillagers method
+        /// Modified method from GitHub user bouhm 
         /// https://github.com/bouhm/stardew-valley-mods/blob/main/NPCMapLocations/ModEntry.cs#L676
         private List<NPC> GetVillagers()
         {
@@ -95,14 +99,12 @@ namespace RememberBirthdays
 
             foreach (var location in Game1.locations)
             {
-                foreach (var npc in location.characters)
+                foreach (var npc in location.getCharacters())
                 {
                     bool shouldTrack =
                         npc != null
-                        && (
-                            npc.isVillager()
-                            || (npc.Name.Equals("Dwarf") && Game1.player.canUnderstandDwarves)
-                            || (npc.CanSocialize && Game1.player.friendshipData.ContainsKey(npc.Name))
+                        && ((npc.CanSocialize && Game1.MasterPlayer.friendshipData.ContainsKey(npc.Name))
+                            || (npc.Name.Equals("Dwarf") && Game1.MasterPlayer.canUnderstandDwarves)
                             || npc.isMarried()
                             || npc is Child
                         );

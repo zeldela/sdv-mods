@@ -11,46 +11,17 @@ namespace JustLuckMod
 {
     internal class LuckHUD      
     {
-        private readonly IModHelper helper;
+        private IModHelper helper;
 
         public LuckHUD(IModHelper helper)
         {
             this.helper = helper;
         }
 
-        internal string GetFortune(Farmer who)
+        internal string GetFortuneMessage(Farmer who)
         {
-            double dailyLuck = who.DailyLuck;
-            string fortuneID;
-
-            if (dailyLuck < -0.07)
-            {
-                fortuneID = "13192";
-            }
-            else if (dailyLuck < -0.02)
-            {
-                fortuneID = "13193";
-            }
-            else if (dailyLuck == 0)
-            {
-                fortuneID = "13201";
-            }
-            else if (dailyLuck <= 0.02)
-            {
-                fortuneID = "13200";
-            }
-            else if (dailyLuck <= 0.07)
-            {
-                fortuneID = "13199";
-            }
-            else
-            {
-                fortuneID = "13198";
-            }
-
-
-            Dictionary<string, string> TV = helper.GameContent.Load<Dictionary<string, string>>("Strings/StringsFromCSFiles");
-            string fortuneTV = TV[$"TV.cs.{fortuneID}"];
+            StardewValley.Objects.TV tv = new StardewValley.Objects.TV();
+            string fortuneTV = tv.getFortuneForecast(who);
             string[] delimiterChars = { "! ", "!", ". ", "." };
             string[] words = fortuneTV.Split(delimiterChars, System.StringSplitOptions.RemoveEmptyEntries);
             string fortune = "";
@@ -59,44 +30,85 @@ namespace JustLuckMod
             {
                 fortune = $"{fortune}{word}.\n";
             }
-
-            double fortuneLuck = Math.Truncate((dailyLuck * 100 * 100)) / 100;
-
-            if (dailyLuck < 0)
-            {
-                fortune = $"{fortune}Fortune: {fortuneLuck}%.";
-            }
-            else
-            {
-                fortune = $"{fortune}Fortune: +{fortuneLuck}%.";
-            }
-
+            fortune = $"{fortune}\n";
             return fortune;
         }
 
-        internal Color GetFortuneColor(Farmer who)
+        internal string GetFortune(double fortuneScore)
         {
-            double dailyLuck = who.DailyLuck;
-            if (dailyLuck < -0.03)
+            double fortuneLuck = Math.Truncate((fortuneScore * 100 * 100)) / 100;
+
+            if (fortuneScore < 0)
             {
-                return new Color(222, 161, 144, 255);
-            }
-            else if (dailyLuck > 0.03)
-            {
-                return new Color(130, 190, 145, 255);
+                return $"{fortuneLuck}%";
             }
             else
             {
-                return Color.White;
+                return $"+{fortuneLuck}%";
+            }
+        }
+
+        internal Color GetFortuneColor(double fortuneScore)
+        {
+            switch (fortuneScore)
+            {
+                case < -0.07:
+                    return new Color(204, 102, 102, 255);
+                case < -0.02:
+                    return new Color(222, 161, 144, 255);
+                case > 0.07:
+                    return new Color(130, 190, 145, 255);
+                case > 0.02:
+                    return new Color(188, 220, 196, 255);
+                default:
+                    return Color.White;
             }
 
         }
 
-        internal ClickableTextureComponent GetLuckIcon()
+        internal double GetFortuneScore(Farmer who)
         {
-            int zoom = 3;
-            int x = Game1.uiViewport.Width - 300;
-            int y = 165;
+            double dailyLuck = who.DailyLuck;
+            return dailyLuck;
+        }
+
+        internal int GetFortuneBuff(Farmer who)
+        {
+            int fortuneBuff = who.LuckLevel;
+            return fortuneBuff;
+        }
+
+        internal string GetBuffString(int fortuneBuff)
+        {
+            if (fortuneBuff < 1)
+                return "";
+            return $" (+{fortuneBuff})";
+        }
+
+        internal Point GetIconCoords(ModConfig config)
+        {
+            int x;
+            int y;
+            int zoom = (Game1.pixelZoom / 4) * 3;
+            switch (config.Location)
+            {
+                case "Stamina Bar":
+                    float num = 0.625f;
+                    x = Game1.uiViewport.Width - 8 - (50/2) - ((10 * zoom)/2);
+                    y = Game1.uiViewport.Height - 224 - 16 - (int)((float)(Game1.player.MaxStamina - 270) * num) - (10 * zoom) - 8;
+                    return new Point(x, y);
+                default:
+                    x = Game1.uiViewport.Width - 300;
+                    y = 165;
+                    return new Point(x, y);
+            }
+        }
+
+        internal ClickableTextureComponent GetLuckIcon(Point coords)
+        {
+            int zoom = (Game1.pixelZoom / 4) * 3;
+            int x = coords.X;
+            int y = coords.Y;
             ClickableTextureComponent luckIcon = new ClickableTextureComponent(
                     new Rectangle(x, y, 10 * zoom, 10 * zoom),
                     Game1.mouseCursors,

@@ -1,7 +1,7 @@
 {
   "Name": "RememberBirthdays",
   "Author": "zeldela",
-  "Version": "1.0.0",
+  "Version": "1.0.1",
   "Description": "Remember to give villagers gifts on their birthday.",
   "UniqueID": "zeldela-RememberBirthdays",
   "EntryDll": "RememberBirthdays.dll",
