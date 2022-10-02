@@ -117,7 +117,7 @@ namespace JustLuckMod
             fortuneBuff = luckHUD.GetFortuneBuff(Game1.player);
             fortuneColor = (!this.config.Monochrome) ? (fortuneBuff > 0 ? luckHUD.GetFortuneColor(fortuneScore + (fortuneBuff / 100f)) : luckHUD.GetFortuneColor(fortuneScore)) : Color.White;
 
-            if (Game1.displayHUD && luckIcon != null)
+            if (Game1.displayHUD && luckIcon != null && !Game1.eventUp)
             {
                 luckIcon.bounds.X = luckCoords.X;
                 luckIcon.bounds.Y = luckCoords.Y;

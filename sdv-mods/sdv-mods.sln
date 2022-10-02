@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JustLuckMod", "JustLuckMod\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RememberBirthdays", "RememberBirthdays\RememberBirthdays.csproj", "{5928A396-BCAC-47E9-B984-F829CC708256}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FastFishPond", "FastFishPond\FastFishPond.csproj", "{639DBBC6-5471-4944-B12F-3E8FB87FCA0E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{5928A396-BCAC-47E9-B984-F829CC708256}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5928A396-BCAC-47E9-B984-F829CC708256}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5928A396-BCAC-47E9-B984-F829CC708256}.Release|Any CPU.Build.0 = Release|Any CPU
+		{639DBBC6-5471-4944-B12F-3E8FB87FCA0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{639DBBC6-5471-4944-B12F-3E8FB87FCA0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{639DBBC6-5471-4944-B12F-3E8FB87FCA0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{639DBBC6-5471-4944-B12F-3E8FB87FCA0E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
