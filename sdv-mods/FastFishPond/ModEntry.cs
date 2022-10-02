@@ -42,15 +42,15 @@ namespace FastFishPond
             // add some config options
             configMenu.AddNumberOption(
                 mod: this.ModManifest,
-                name: () => "Spawn Time (days) (REQUIRES RESTART)",
+                name: () => "Spawn time (days) (CHANGE REQUIRES RESTART)",
                 getValue: () => this.Config.spawnTime,
                 setValue: value => this.Config.spawnTime = value
             );
 
             configMenu.AddBoolOption(
                 mod: this.ModManifest,
-                name: () => "Vanilla Ponds (REQUIRES RESTART)",
-                tooltip: () => "Adds minor chance and drop buffs to rebalance Fish Ponds",
+                name: () => "Vanilla ponds (CHANGE REQUIRES RESTART)",
+                tooltip: () => "Turn off for minor rebalancing of fish pond outputs.",
                 getValue: () => this.Config.vanilla,
                 setValue: value => this.Config.vanilla = value
             );
